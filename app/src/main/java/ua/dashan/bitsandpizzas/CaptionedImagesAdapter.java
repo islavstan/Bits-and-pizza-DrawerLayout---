@@ -6,9 +6,12 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 //это всё относится к карточке
+//здесь мы создаём  карточки с названиями и изображениями разных видов пиццы
+//Карточки определяются в макете card_captioned_image.xml.
 /*ViewHolder предоставляет ссылку на представление (или
         представления) каждого варианта данных в RecyclerView; это
         своего рода «ячейка» для размещения отображаемых данных.
@@ -23,6 +26,11 @@ public class CaptionedImagesAdapter extends RecyclerView.Adapter<CaptionedImages
     //Переменные для названий и идентификаторов ресурсов изображений разных видов пиццы.
     private String[]captions;
     private int[]imageIds;
+    //Добавить объект Listener как приватную переменную.
+    private Listener listener;
+    public static interface Listener {
+        public void onClick(int position);
+    }
     //Предоставляет ссылку на представления, используемые в RecyclerView
     public static class ViewHolder extends RecyclerView.ViewHolder{
         /*В нашем компоненте RecyclerView должны отображаться карточки, поэтому мы указываем, что  ViewHolder
@@ -40,6 +48,9 @@ public class CaptionedImagesAdapter extends RecyclerView.Adapter<CaptionedImages
         this.captions = captions;
         this.imageIds = imageIds;
     }
+    //Активности и фрагменты используют этот метод для регистрации себя в качестве слушателя
+    public void setListener(Listener listener){
+        this.listener = listener;}
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
        CardView cv=(CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.card_captioned_image,parent,false);
@@ -47,7 +58,7 @@ public class CaptionedImagesAdapter extends RecyclerView.Adapter<CaptionedImages
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         //Заполнение заданного представления данными
         CardView cardView=holder.cardView;
         //Изображение выводится в графическом представлении ImageView
@@ -58,6 +69,15 @@ public class CaptionedImagesAdapter extends RecyclerView.Adapter<CaptionedImages
         TextView textView = (TextView)cardView.findViewById(R.id.info_text);
         //Название выводится в компоненте TextView
         textView.setText(captions[position]);
+        cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    //При щелчке на CardView вызвать метод onClick() интерфейса Listener.
+                    listener.onClick(position);
+                }
+            }
+        });
     }
 
     @Override
