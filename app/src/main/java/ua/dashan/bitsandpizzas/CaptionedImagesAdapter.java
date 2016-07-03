@@ -1,9 +1,14 @@
 package ua.dashan.bitsandpizzas;
 
 
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+//это всё относится к карточке
 /*ViewHolder предоставляет ссылку на представление (или
         представления) каждого варианта данных в RecyclerView; это
         своего рода «ячейка» для размещения отображаемых данных.
@@ -15,6 +20,9 @@ import android.view.ViewGroup;
         точку; следовательно, класс ViewHolder должен содер-
         жать CardView*/
 public class CaptionedImagesAdapter extends RecyclerView.Adapter<CaptionedImagesAdapter.ViewHolder> {
+    //Переменные для названий и идентификаторов ресурсов изображений разных видов пиццы.
+    private String[]captions;
+    private int[]imageIds;
     //Предоставляет ссылку на представления, используемые в RecyclerView
     public static class ViewHolder extends RecyclerView.ViewHolder{
         /*В нашем компоненте RecyclerView должны отображаться карточки, поэтому мы указываем, что  ViewHolder
@@ -27,20 +35,35 @@ public class CaptionedImagesAdapter extends RecyclerView.Adapter<CaptionedImages
             cardView = v;
 
     } }
+
+    public CaptionedImagesAdapter(String[] captions, int[] imageIds){
+        this.captions = captions;
+        this.imageIds = imageIds;
+    }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        //Создание нового представления
-        return null;
+       CardView cv=(CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.card_captioned_image,parent,false);
+        return new ViewHolder(cv);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         //Заполнение заданного представления данными
+        CardView cardView=holder.cardView;
+        //Изображение выводится в графическом представлении ImageView
+        ImageView imageView=(ImageView)cardView.findViewById(R.id.info_image);
+        Drawable drawable = cardView.getResources().getDrawable(imageIds[position]);
+        imageView.setImageDrawable(drawable);
+        imageView.setContentDescription(captions[position]);
+        TextView textView = (TextView)cardView.findViewById(R.id.info_text);
+        //Название выводится в компоненте TextView
+        textView.setText(captions[position]);
     }
 
     @Override
     public int getItemCount() {
         //Возвращает количество вариантов в наборе данных
+        return captions.length;//Количество элементов данных.
     }
 
 

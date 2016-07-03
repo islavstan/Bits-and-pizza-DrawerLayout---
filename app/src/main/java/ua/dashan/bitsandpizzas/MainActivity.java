@@ -101,10 +101,10 @@ public class MainActivity extends Activity {
                 if (fragment instanceof TopFragment) {
                     currentPosition = 0;
                 }
-                if (fragment instanceof PizzaFragment) {
+                if (fragment instanceof /*PizzaFragment*/PizzaMaterialFragment) {
                     currentPosition = 1;
                 }
-                if (fragment instanceof PastaFragment) {
+                if (fragment instanceof /*PastaFragment*/PastaMaterial) {
                     currentPosition = 2;
                 }
                 if (fragment instanceof StoresFragment) {
@@ -128,10 +128,10 @@ public class MainActivity extends Activity {
             типа. Например, вариант “Pizzas” находится в позиции 1, поэтому
             в этом случае создается фрагмент PizzaFragment.*/
             case 1:
-                fragment = new PizzaFragment();
+                fragment = new PizzaMaterialFragment();
                 break;
             case 2:
-                fragment = new PastaFragment();
+                fragment = new PastaMaterial();
                 break;
             case 3:
                 fragment = new StoresFragment();
